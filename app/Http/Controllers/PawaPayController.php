@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PawapayAccount;
 use App\Models\PawapayTransaction;
 use App\Models\ProductPaymentLink;
 use Illuminate\Http\Client\ConnectionException;
@@ -12,7 +13,6 @@ use Illuminate\Support\Str;
 
 class PawaPayController extends Controller
 {
-
     public function index()
     {
         return view('pawapay.payment.form');
@@ -35,6 +35,10 @@ class PawaPayController extends Controller
         $product = ProductPaymentLink::where('reference_id', $request->get('reference_id'))->first();
         $referenceId = $product->reference_id;
 
+        $country = $request->get('country');
+        if($country == "USD"){
+            $country = "COD";
+        }
         $payload = [
             "depositId" => $referenceId,
             "amountDetails" => [
@@ -43,7 +47,7 @@ class PawaPayController extends Controller
             ],
             "phoneNumber" => $request->get('phone'),
             "language" => "EN",
-            "country" => $request->get('country'),
+            "country" =>$country,
             "metadata" => [
                 [
                     "customerId" => $request->get('email'),
@@ -53,7 +57,12 @@ class PawaPayController extends Controller
             "returnUrl" => $product->redirect_url . '?ref=' . $referenceId,
         ];
 
-        $response = Http::withToken(env('PAWAPAY_API_KEY'))
+        $pawapayAccount = PawapayAccount::find($product->pawapay_account_id);
+        if (!$pawapayAccount || !isset($pawapayAccount->api_key)) {
+            return back()->with('error', "Payapay account credentials are not set");
+        }
+
+        $response = Http::withToken($pawapayAccount->api_key)
             ->withHeaders([
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
