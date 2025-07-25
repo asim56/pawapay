@@ -47,20 +47,12 @@
                     @csrf
 
                     {{-- Phone Number --}}
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-1" for="phone">Phone Number *</label>
-                        <input type="phone" id="phone" name="phone" required
-                               class="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring focus:ring-blue-200">
-                    </div>
+{{--                    <div class="mb-4">--}}
+{{--                        <label class="block text-sm font-medium text-gray-700 mb-1" for="phone">Phone Number *</label>--}}
+{{--                        <input type="phone" id="phone" name="phone" required--}}
+{{--                               class="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring focus:ring-blue-200">--}}
+{{--                    </div>--}}
 
-                    {{-- Email --}}
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-1" for="email">Email Address *</label>
-                        <input type="email" id="email" name="email" required
-                               class="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring focus:ring-blue-200">
-                    </div>
-
-                    {{-- Country --}}
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 mb-1" for="country">Country *</label>
                         <select id="country" name="country" required
@@ -90,7 +82,7 @@
                     </div>
 
                     {{-- Currency --}}
-                    <div class="mb-6">
+                    <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 mb-1" for="currency">Currency</label>
                         <select id="currency" name="currency" required
                                 class="w-full border border-gray-300 rounded-md px-4 py-2 bg-white focus:ring focus:ring-blue-200">
@@ -110,6 +102,44 @@
                             <option value="ZMW">ZMW (Zambian Kwacha)</option>
                         </select>
                     </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1" for="phone">Phone Number *</label>
+                        <div class="flex gap-2">
+                            <select name="country_code" id="country_code" required
+                                    class="w-1/3 border border-gray-300 rounded-md px-2 py-2 bg-white focus:ring focus:ring-blue-200">
+                                <option value="+229">🇧🇯 +229</option>
+                                <option value="+226">🇧🇫 +226</option>
+                                <option value="+237">🇨🇲 +237</option>
+                                <option value="+225">🇨🇮 +225</option>
+                                <option value="+243" selected="selected">🇨🇩 +243</option>
+                                <option value="+241">🇬🇦 +241</option>
+                                <option value="+233">🇬🇭 +233</option>
+                                <option value="+254">🇰🇪 +254</option>
+                                <option value="+265">🇲🇼 +265</option>
+                                <option value="+258">🇲🇿 +258</option>
+                                <option value="+234">🇳🇬 +234</option>
+                                <option value="+242">🇨🇬 +242</option>
+                                <option value="+250">🇷🇼 +250</option>
+                                <option value="+221">🇸🇳 +221</option>
+                                <option value="+232">🇸🇱 +232</option>
+                                <option value="+255">🇹🇿 +255</option>
+                                <option value="+256">🇺🇬 +256</option>
+                                <option value="+260">🇿🇲 +260</option>
+                                <option value="+1">🇺🇸 +1</option>
+                            </select>
+                            <input type="tel" id="phone" name="phone" required
+                                   class="w-2/3 border border-gray-300 rounded-md px-4 py-2 focus:ring focus:ring-blue-200"
+                                   placeholder="Enter phone number">
+                        </div>
+                    </div>
+                    {{-- Email --}}
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1" for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required
+                               class="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring focus:ring-blue-200">
+                    </div>
+
 
                     {{-- Hidden Inputs --}}
                     <input type="hidden" name="price" id="price" value="{{$product->price}}">
@@ -202,10 +232,10 @@
             });
         }
 
-        // Trigger on currency change or USD amount change
-        // $('#country, #currency').on('change keyup', function () {
-        //     convertUSDToSelectedCurrency();
-        // });
+
+        $('#country, #currency').on('change keyup', function () {
+            convertUSDToSelectedCurrency();
+        });
 
         // Optional: convert on page load
         $(document).ready(function () {

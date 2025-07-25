@@ -25,6 +25,7 @@ class PawaPayController extends Controller
     {
         $request->validate([
             'phone' => 'required',
+            'country_code' => 'required',
             'email' => 'required',
             'country' => 'required',
             'currency' => 'required',
@@ -39,13 +40,16 @@ class PawaPayController extends Controller
         if($country == "USD"){
             $country = "COD";
         }
+
+        $phone = $this->formatPhoneNumber($request->get('phone'), $request->get('country_code'));
+
         $payload = [
             "depositId" => $referenceId,
             "amountDetails" => [
                 "amount" => $request->get('final_amount'),
                 "currency" => $request->get('currency'),
             ],
-            "phoneNumber" => $request->get('phone'),
+            "phoneNumber" => $phone,
             "language" => "EN",
             "country" =>$country,
             "metadata" => [
@@ -99,6 +103,20 @@ class PawaPayController extends Controller
         return redirect($data['redirectUrl']);
     }
 
+    function formatPhoneNumber($phone, $countryCode)
+    {
+        // Remove any non-digit characters for comparison (optional)
+        $normalizedPhone = preg_replace('/\D/', '', $phone);
+        $normalizedCode = preg_replace('/\D/', '', $countryCode);
+
+        // Check if phone starts with country code
+        if (strpos($normalizedPhone, $normalizedCode) === 0) {
+            return $normalizedPhone;
+        }
+
+        // Prepend country code
+        return $normalizedCode . $normalizedPhone;
+    }
 
     public function paymentStatus(Request $request)
     {
