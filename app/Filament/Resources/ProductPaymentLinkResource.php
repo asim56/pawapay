@@ -65,8 +65,9 @@ class ProductPaymentLinkResource extends Resource
                     ->image() // marks it as an image
                         ->disk("public")
                     ->directory('product-images') // optional: where images will be stored
-                    ->imagePreviewHeight('100') // optional
+                  //  ->imagePreviewHeight('100') // optional
                         ->visibility("public")
+                    ->maxSize(5000)
                     ->required()
             ]);
     }
