@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\PawapayAccount;
 use App\Models\PawapayTransaction;
 use App\Models\ProductPaymentLink;
+use App\Models\Webhook;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -12,6 +13,9 @@ class PawaPayWebhookController extends Controller
 {
     public function index(Request $request)
     {
+        Webhook::created([
+            "payload" => $request->all(),
+        ]);
         $cancel = $request->get('cancel', null);
         $ref = $request->get('ref', null);
         if (!empty($cancel)) {
