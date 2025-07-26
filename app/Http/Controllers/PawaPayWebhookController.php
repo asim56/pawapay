@@ -9,6 +9,11 @@ class PawaPayWebhookController extends Controller
 {
     public function index(Request $request)
     {
+        $cancel = $request->get('cancel', null);
+        $ref = $request->get('ref', null);
+        if (!empty($cancel) && isset($ref)) {
+            return redirect(url("/product/payment/".$ref));
+        }
         $payload = $request->all();
 
         $transaction = PawapayTransaction::where('reference_id', $payload['reference'])->first();
