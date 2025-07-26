@@ -1,6 +1,37 @@
 @extends('layouts.app')
 
 @section('content')
+
+    <style>
+        .select2-container--default .select2-selection--single {
+            height: 42px !important; /* Tailwind's h-10 = 2.5rem = 40px (+border) */
+            border: 1px solid #d1d5db !important; /* border-gray-300 */
+            border-radius: 0.375rem !important;   /* rounded-md */
+            padding: 0 0.75rem !important;        /* px-3 */
+            display: flex !important;
+            align-items: center !important;
+            background-color: white !important;
+            box-sizing: border-box;
+        }
+
+        /* Prevent text from jumping or misaligning */
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: normal !important;
+            padding-left: 0 !important;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Center the arrow */
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 100% !important;
+            top: 0 !important;
+            right: 0.75rem;
+            display: flex;
+            align-items: center;
+        }
+
+    </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <div class="min-h-screen bg-gray-100 flex items-center justify-center py-10 px-4">
@@ -82,7 +113,7 @@
                     {{--                    </div>--}}
 
                     <div class="mb-4">
-                        <select name="country" id="country" class="select2-country" required>
+                        <select name="country" id="country" class="select2-country  w-full" required>
                             <option value="">Select country</option>
                             @foreach ($countries as $country)
                                 <option value="{{ $country['alpha3'] }}"
@@ -152,7 +183,7 @@
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 mb-1" for="phone">Phone Number *</label>
                         <div class="flex gap-2">
-                            <select name="country_code" id="country_code" class="select2-country-code w-1/3 border border-gray-300 rounded-md px-2 py-2 bg-white focus:ring focus:ring-blue-200" required>
+                            <select name="country_code" id="country_code" class="select2-country-code w-full" required>
                                 <option value="">Select country</option>
                                 @foreach ($countries as $country)
                                     <option value="{{ $country['dial_code'] }}"
@@ -289,14 +320,14 @@
                 templateResult: formatCountry,
                 templateSelection: formatCountry,
                 minimumResultsForSearch: -1,
-                width: '100%'
+                width: 'resolve'
             });
 
             $('.select2-country').select2({
                 templateResult: formatCountry,
                 templateSelection: formatCountry,
                 minimumResultsForSearch: -1,
-                width: '100%'
+                width: 'resolve'
             });
         });
 
