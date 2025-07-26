@@ -47,41 +47,56 @@
                     @csrf
 
                     {{-- Phone Number --}}
-{{--                    <div class="mb-4">--}}
-{{--                        <label class="block text-sm font-medium text-gray-700 mb-1" for="phone">Phone Number *</label>--}}
-{{--                        <input type="phone" id="phone" name="phone" required--}}
-{{--                               class="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring focus:ring-blue-200">--}}
-{{--                    </div>--}}
+                    {{--                    <div class="mb-4">--}}
+                    {{--                        <label class="block text-sm font-medium text-gray-700 mb-1" for="phone">Phone Number *</label>--}}
+                    {{--                        <input type="phone" id="phone" name="phone" required--}}
+                    {{--                               class="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring focus:ring-blue-200">--}}
+                    {{--                    </div>--}}
+
+                    {{--                    <div class="mb-4">--}}
+                    {{--                        <label class="block text-sm font-medium text-gray-700 mb-1" for="country">Country *</label>--}}
+                    {{--                        <select id="country" name="country" required--}}
+                    {{--                                class="w-full border border-gray-300 rounded-md px-4 py-2 bg-white focus:ring focus:ring-blue-200">--}}
+                    {{--                            <option value="">Select country</option>--}}
+                    {{--                            --}}{{-- Country options --}}
+                    {{--                            <option value="BEN" data-currency="XOF">🇧🇯 Benin</option>--}}
+                    {{--                            <option value="BFA" data-currency="XOF">🇧🇫 Burkina Faso</option>--}}
+                    {{--                            <option value="CMR" data-currency="XAF">🇨🇲 Cameroon</option>--}}
+                    {{--                            <option value="CIV" data-currency="XOF">🇨🇮 Côte d’Ivoire</option>--}}
+                    {{--                            <option value="COD" data-currency="CDF">🇨🇩 Democratic Republic of the Congo(CDF)</option>--}}
+                    {{--                            <option value="USD" data-currency="USD" selected="selected">🇨🇩 Democratic Republic of the Congo(USD)</option>--}}
+                    {{--                            <option value="GAB" data-currency="XAF">🇬🇦 Gabon</option>--}}
+                    {{--                            <option value="GHA" data-currency="GHS">🇬🇭 Ghana</option>--}}
+                    {{--                            <option value="KEN" data-currency="KES">🇰🇪 Kenya</option>--}}
+                    {{--                            <option value="MWI" data-currency="MWK">🇲🇼 Malawi</option>--}}
+                    {{--                            <option value="MOZ" data-currency="MZN">🇲🇿 Mozambique</option>--}}
+                    {{--                            <option value="NGA" data-currency="NGN">🇳🇬 Nigeria</option>--}}
+                    {{--                            <option value="COG" data-currency="XAF">🇨🇬 Republic of the Congo</option>--}}
+                    {{--                            <option value="RWA" data-currency="RWF">🇷🇼 Rwanda</option>--}}
+                    {{--                            <option value="SEN" data-currency="XOF">🇸🇳 Senegal</option>--}}
+                    {{--                            <option value="SLE" data-currency="SLE">🇸🇱 Sierra Leone</option>--}}
+                    {{--                            <option value="TZA" data-currency="TZS">🇹🇿 Tanzania</option>--}}
+                    {{--                            <option value="UGA" data-currency="UGX">🇺🇬 Uganda</option>--}}
+                    {{--                            <option value="ZMB" data-currency="ZMW">🇿🇲 Zambia</option>--}}
+                    {{--                        </select>--}}
+                    {{--                    </div>--}}
 
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-1" for="country">Country *</label>
-                        <select id="country" name="country" required
-                                class="w-full border border-gray-300 rounded-md px-4 py-2 bg-white focus:ring focus:ring-blue-200">
+                        <select name="country" id="country" class="select2-country" required>
                             <option value="">Select country</option>
-                            {{-- Country options --}}
-                            <option value="BEN" data-currency="XOF">🇧🇯 Benin</option>
-                            <option value="BFA" data-currency="XOF">🇧🇫 Burkina Faso</option>
-                            <option value="CMR" data-currency="XAF">🇨🇲 Cameroon</option>
-                            <option value="CIV" data-currency="XOF">🇨🇮 Côte d’Ivoire</option>
-                            <option value="COD" data-currency="CDF">🇨🇩 Democratic Republic of the Congo(CDF)</option>
-                            <option value="USD" data-currency="USD" selected="selected">🇨🇩 Democratic Republic of the Congo(USD)</option>
-                            <option value="GAB" data-currency="XAF">🇬🇦 Gabon</option>
-                            <option value="GHA" data-currency="GHS">🇬🇭 Ghana</option>
-                            <option value="KEN" data-currency="KES">🇰🇪 Kenya</option>
-                            <option value="MWI" data-currency="MWK">🇲🇼 Malawi</option>
-                            <option value="MOZ" data-currency="MZN">🇲🇿 Mozambique</option>
-                            <option value="NGA" data-currency="NGN">🇳🇬 Nigeria</option>
-                            <option value="COG" data-currency="XAF">🇨🇬 Republic of the Congo</option>
-                            <option value="RWA" data-currency="RWF">🇷🇼 Rwanda</option>
-                            <option value="SEN" data-currency="XOF">🇸🇳 Senegal</option>
-                            <option value="SLE" data-currency="SLE">🇸🇱 Sierra Leone</option>
-                            <option value="TZA" data-currency="TZS">🇹🇿 Tanzania</option>
-                            <option value="UGA" data-currency="UGX">🇺🇬 Uganda</option>
-                            <option value="ZMB" data-currency="ZMW">🇿🇲 Zambia</option>
+                            @foreach ($countries as $country)
+                                <option value="{{ $country['alpha3'] }}"
+                                        data-currency="{{ $country['currency'] }}"
+                                        data-dial-code="{{ $country['dial_code'] }}"
+                                        data-flag="{{ strtolower($country['alpha2']) }}"
+                                    {{ $country['alpha3'] === "COD" ? 'selected' : '' }}>
+                                    {{ $country['name'] }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
 
-                    {{-- Currency --}}
+
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 mb-1" for="currency">Currency</label>
                         <select id="currency" name="currency" required
@@ -103,30 +118,51 @@
                         </select>
                     </div>
 
+{{--                    <div class="mb-4">--}}
+{{--                        <label class="block text-sm font-medium text-gray-700 mb-1" for="phone">Phone Number *</label>--}}
+{{--                        <div class="flex gap-2">--}}
+{{--                            <select name="country_code" id="country_code" required--}}
+{{--                                    class="w-1/3 border border-gray-300 rounded-md px-2 py-2 bg-white focus:ring focus:ring-blue-200">--}}
+{{--                                <option value="+229">🇧🇯 +229</option>--}}
+{{--                                <option value="+226">🇧🇫 +226</option>--}}
+{{--                                <option value="+237">🇨🇲 +237</option>--}}
+{{--                                <option value="+225">🇨🇮 +225</option>--}}
+{{--                                <option value="+243" selected="selected">🇨🇩 +243</option>--}}
+{{--                                <option value="+241">🇬🇦 +241</option>--}}
+{{--                                <option value="+233">🇬🇭 +233</option>--}}
+{{--                                <option value="+254">🇰🇪 +254</option>--}}
+{{--                                <option value="+265">🇲🇼 +265</option>--}}
+{{--                                <option value="+258">🇲🇿 +258</option>--}}
+{{--                                <option value="+234">🇳🇬 +234</option>--}}
+{{--                                <option value="+242">🇨🇬 +242</option>--}}
+{{--                                <option value="+250">🇷🇼 +250</option>--}}
+{{--                                <option value="+221">🇸🇳 +221</option>--}}
+{{--                                <option value="+232">🇸🇱 +232</option>--}}
+{{--                                <option value="+255">🇹🇿 +255</option>--}}
+{{--                                <option value="+256">🇺🇬 +256</option>--}}
+{{--                                <option value="+260">🇿🇲 +260</option>--}}
+{{--                                <option value="+1">🇺🇸 +1</option>--}}
+{{--                            </select>--}}
+{{--                            <input type="tel" id="phone" name="phone" required--}}
+{{--                                   class="w-2/3 border border-gray-300 rounded-md px-4 py-2 focus:ring focus:ring-blue-200"--}}
+{{--                                   placeholder="Enter phone number">--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 mb-1" for="phone">Phone Number *</label>
                         <div class="flex gap-2">
-                            <select name="country_code" id="country_code" required
-                                    class="w-1/3 border border-gray-300 rounded-md px-2 py-2 bg-white focus:ring focus:ring-blue-200">
-                                <option value="+229">🇧🇯 +229</option>
-                                <option value="+226">🇧🇫 +226</option>
-                                <option value="+237">🇨🇲 +237</option>
-                                <option value="+225">🇨🇮 +225</option>
-                                <option value="+243" selected="selected">🇨🇩 +243</option>
-                                <option value="+241">🇬🇦 +241</option>
-                                <option value="+233">🇬🇭 +233</option>
-                                <option value="+254">🇰🇪 +254</option>
-                                <option value="+265">🇲🇼 +265</option>
-                                <option value="+258">🇲🇿 +258</option>
-                                <option value="+234">🇳🇬 +234</option>
-                                <option value="+242">🇨🇬 +242</option>
-                                <option value="+250">🇷🇼 +250</option>
-                                <option value="+221">🇸🇳 +221</option>
-                                <option value="+232">🇸🇱 +232</option>
-                                <option value="+255">🇹🇿 +255</option>
-                                <option value="+256">🇺🇬 +256</option>
-                                <option value="+260">🇿🇲 +260</option>
-                                <option value="+1">🇺🇸 +1</option>
+                            <select name="country_code" id="country_code" class="select2-country-code w-1/3 border border-gray-300 rounded-md px-2 py-2 bg-white focus:ring focus:ring-blue-200" required>
+                                <option value="">Select country</option>
+                                @foreach ($countries as $country)
+                                    <option value="{{ $country['dial_code'] }}"
+                                            data-currency="{{ $country['currency'] }}"
+                                            data-country-code="{{ $country['alpha3'] }}"
+                                            data-flag="{{ strtolower($country['alpha2']) }}"
+                                        {{ $country['dial_code'] === "+243" ? 'selected' : '' }}>
+                                        {{ $country['dial_code'] }}
+                                    </option>
+                                @endforeach
                             </select>
                             <input type="tel" id="phone" name="phone" required
                                    class="w-2/3 border border-gray-300 rounded-md px-4 py-2 focus:ring focus:ring-blue-200"
@@ -160,38 +196,41 @@
     </div>
 @endsection
 @section('scripts')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Select2 CSS + JS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
-        const currencyMap = {
-            'BEN': {code: 'XOF', name: 'West African CFA franc', decimal_supported: false},
-            'BFA': {code: 'XOF', name: 'West African CFA franc', decimal_supported: false},
-            'CMR': {code: 'XAF', name: 'Central African CFA franc', decimal_supported: false},
-            'CIV': {code: 'XOF', name: 'West African CFA franc', decimal_supported: false},
-            'COD': {code: 'CDF', name: 'Congolese Franc', decimal_supported: false},
-            'USD': {code: 'USD', name: 'USD', decimal_supported: false},
-            'GAB': {code: 'XAF', name: 'Central African CFA franc', decimal_supported: false},
-            'GHA': {code: 'GHS', name: 'Ghanaian Cedi', decimal_supported: false},
-            'KEN': {code: 'KES', name: 'Kenyan Shilling', decimal_supported: false},
-            'MWI': {code: 'MWK', name: 'Malawian Kwacha', decimal_supported: false},
-            'MOZ': {code: 'MZN', name: 'Mozambican Metical', decimal_supported: false},
-            'NGA': {code: 'NGN', name: 'Nigerian Naira', decimal_supported: false},
-            'COG': {code: 'XAF', name: 'Central African CFA franc', decimal_supported: false},
-            'RWA': {code: 'RWF', name: 'Rwandan Franc', decimal_supported: false},
-            'SEN': {code: 'XOF', name: 'West African CFA franc', decimal_supported: false},
-            'SLE': {code: 'SLE', name: 'Sierra Leonean Leone', decimal_supported: false},
-            'TZA': {code: 'TZS', name: 'Tanzanian Shilling', decimal_supported: false},
-            'UGA': {code: 'UGX', name: 'Ugandan Shilling', decimal_supported: false},
-            'ZMB': {code: 'ZMW', name: 'Zambian Kwacha', decimal_supported: false}
-        };
+        // const currencyMap = {
+        //     'BEN': {code: 'XOF', name: 'West African CFA franc', decimal_supported: false},
+        //     'BFA': {code: 'XOF', name: 'West African CFA franc', decimal_supported: false},
+        //     'CMR': {code: 'XAF', name: 'Central African CFA franc', decimal_supported: false},
+        //     'CIV': {code: 'XOF', name: 'West African CFA franc', decimal_supported: false},
+        //     'COD': {code: 'CDF', name: 'Congolese Franc', decimal_supported: false},
+        //     'USD': {code: 'USD', name: 'USD', decimal_supported: false},
+        //     'GAB': {code: 'XAF', name: 'Central African CFA franc', decimal_supported: false},
+        //     'GHA': {code: 'GHS', name: 'Ghanaian Cedi', decimal_supported: false},
+        //     'KEN': {code: 'KES', name: 'Kenyan Shilling', decimal_supported: false},
+        //     'MWI': {code: 'MWK', name: 'Malawian Kwacha', decimal_supported: false},
+        //     'MOZ': {code: 'MZN', name: 'Mozambican Metical', decimal_supported: false},
+        //     'NGA': {code: 'NGN', name: 'Nigerian Naira', decimal_supported: false},
+        //     'COG': {code: 'XAF', name: 'Central African CFA franc', decimal_supported: false},
+        //     'RWA': {code: 'RWF', name: 'Rwandan Franc', decimal_supported: false},
+        //     'SEN': {code: 'XOF', name: 'West African CFA franc', decimal_supported: false},
+        //     'SLE': {code: 'SLE', name: 'Sierra Leonean Leone', decimal_supported: false},
+        //     'TZA': {code: 'TZS', name: 'Tanzanian Shilling', decimal_supported: false},
+        //     'UGA': {code: 'UGX', name: 'Ugandan Shilling', decimal_supported: false},
+        //     'ZMB': {code: 'ZMW', name: 'Zambian Kwacha', decimal_supported: false}
+        // };
 
         $('#country').on('change', function () {
-            const selectedCountry = $(this).val();
-            const currency = currencyMap[selectedCountry];
+            let currency = $('option:selected', this).data('currency');
+            $('#currency').val(currency);
+            let dialCode = $('option:selected', this).data('dial-code');
+            $('#country_code').val(dialCode).trigger('change');
 
-            if (currency) {
-                $('#currency').val(currency.code);
-            } else {
-                $('#currency').val();
-            }
+            convertUSDToSelectedCurrency();
         });
 
 
@@ -232,15 +271,47 @@
             });
         }
 
+        function formatCountry(country) {
+            if (!country.id) return country.text;
 
-        $('#country, #currency').on('change keyup', function () {
-            convertUSDToSelectedCurrency();
+            const flagCode = $(country.element).data('flag');
+            const flagUrl = `https://flagcdn.com/h20/${flagCode}.png`;
+
+            return $(`
+            <span>
+                <img src="${flagUrl}" class="inline-block mr-2" width="20" /> ${country.text}
+            </span>
+        `);
+        }
+
+        $(document).ready(function () {
+            $('.select2-country-code').select2({
+                templateResult: formatCountry,
+                templateSelection: formatCountry,
+                minimumResultsForSearch: -1,
+                width: '100%'
+            });
+
+            $('.select2-country').select2({
+                templateResult: formatCountry,
+                templateSelection: formatCountry,
+                minimumResultsForSearch: -1,
+                width: '100%'
+            });
         });
 
+
+        // $('#country, #currency').on('change keyup', function () {
+        //     convertUSDToSelectedCurrency();
+        // });
+        //
         // Optional: convert on page load
         $(document).ready(function () {
-            $('#country, #currency').trigger('change');
-            convertUSDToSelectedCurrency();
+          //  $('#country, #currency').trigger('change');
+          //   $('#country').val('COD').trigger('change');
+          //   $('#currency').val('USD').trigger('change');
+          //   $('#country_code').val('+243').trigger('change');
+   //         convertUSDToSelectedCurrency();
         });
     </script>
 @endsection

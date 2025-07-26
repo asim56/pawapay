@@ -37,18 +37,6 @@ class ProductController extends Controller
         return response()->json(["status"=> "success", "url"=> url("product/payment/".$referenceId)]);
     }
 
-    function productPayment($token)
-    {
-        $product = ProductPaymentLink::where('reference_id', $token)->first();
-
-        if (!$product) {
-            abort(404, 'Product details not found');
-        }
-
-        return view('pawapay.product.payment.currency_converter', compact('product'));
-
-    }
-
     public function paymentStatus(Request $request)
     {
         $transaction = PawapayTransaction::where('reference_id', $request->ref)->firstOrFail();
