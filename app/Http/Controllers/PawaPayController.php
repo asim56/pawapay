@@ -57,9 +57,9 @@ class PawaPayController extends Controller
         }
 
         $phone = $this->formatPhoneNumber($request->get('phone'), $request->get('country_code'));
-
+        $depositId = (string) Str::uuid();
         $payload = [
-            "depositId" => $referenceId,
+            "depositId" => $depositId,
             "amountDetails" => [
                 "amount" => $request->get('final_amount'),
                 "currency" => $request->get('currency'),
@@ -71,7 +71,10 @@ class PawaPayController extends Controller
                 [
                     "customerId" => $request->get('email'),
                     "isPII" => true
-                ]
+                ],
+                [
+                    "product_link_id" => $product->reference_id
+                ],
             ],
             "returnUrl" => $product->redirect_url . '?ref=' . $referenceId,
         ];
@@ -86,7 +89,7 @@ class PawaPayController extends Controller
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
             ])
-            ->post(env("PAWAPAY_PAYMENT_PAGE_URL"), $payload);
+            ->post(env("PAWAPAY_PAYMENT_PAGE_URL")."/paymentpage", $payload);
 
 
         if ($response->failed()) {
@@ -105,8 +108,9 @@ class PawaPayController extends Controller
         }
 
         PawapayTransaction::updateOrCreate(
-            ['reference_id' => $referenceId],
+            ['deposit_id' => $depositId],
             [
+                'product_link_id' => $product->reference_id,
                 'name' => $request->name,
                 'phone' => $request->phone,
                 'amount' => $request->final_amount,
@@ -140,7 +144,7 @@ class PawaPayController extends Controller
         if (!empty($cancel) && isset($ref)) {
             return redirect(url("/product/payment/".$ref));
         }
-        $transaction = PawapayTransaction::where('reference_id', $request->ref)->firstOrFail();
+        $transaction = PawapayTransaction::where('deposit_id', $request->depositId)->firstOrFail();
         return view('pawapay.payment.success', compact('transaction'));
     }
 

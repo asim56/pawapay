@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('pawapay_transactions', function (Blueprint $table) {
             $table->id();
-            $table->string('reference_id')->unique();
+            $table->string('deposit_id')->unique();
+            $table->string('product_link_id')->nullable();
             $table->string('name')->nullable();
             $table->string('phone');
             $table->string('email')->nullable();

@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class PawapayTransaction extends Model
 {
     protected $fillable = [
-        'reference_id',
+        'deposit_id',
+        'product_link_id',
         'name',
         'phone',
         'amount',
