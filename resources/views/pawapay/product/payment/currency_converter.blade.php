@@ -116,7 +116,7 @@
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 mb-1" for="phone">Phone Number *</label>
                         <div class="flex gap-2 flex-col sm:flex-row">
-                            <select name="country_code" id="country_code" class="select2-country-code sm:w-1/3 w-full" required>
+                            <select name="country_code" id="country_code" class="select2-country-code sm:w-2/3 w-full" required>
                                 <option value="">Select country</option>
                                 @foreach ($countries as $country)
                                     <option value="{{ $country['dial_code'] }}"
