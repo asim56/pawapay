@@ -12,9 +12,6 @@ Route::middleware('auth')->group(function () {
 });
 
 
-//Route::get('/product/payment/create/url', [ProductController::class, 'showPaymentLinkCreator']);
-//Route::post('/product/payment/create/url/submit', [ProductController::class, 'submitPaymentLinkCreator'])->name('product_payment_create_url');
-
 Route::post('/product/payment/submit', [ProductController::class, 'submitProductPayment'])->name('product_payment');
 
 //Route::get('/', [PawaPayController::class, 'index']);
