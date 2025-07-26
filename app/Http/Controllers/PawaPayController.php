@@ -135,6 +135,11 @@ class PawaPayController extends Controller
 
     public function paymentStatus(Request $request)
     {
+        $cancel = $request->get('cancel', null);
+        $ref = $request->get('ref', null);
+        if (!empty($cancel) && isset($ref)) {
+            return redirect(url("/product/payment/".$ref));
+        }
         $transaction = PawapayTransaction::where('reference_id', $request->ref)->firstOrFail();
         return view('pawapay.payment.success', compact('transaction'));
     }
