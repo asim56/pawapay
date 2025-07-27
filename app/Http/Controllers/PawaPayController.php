@@ -151,7 +151,7 @@ class PawaPayController extends Controller
 
 
             $link = ProductPaymentLink::where(["reference_id" => $ref])->first();
-            $pawapayAccount = PawapayAccount::find($link->id);
+            $pawapayAccount = PawapayAccount::find($link->pawapay_account_id);
 
             $response = Http::withHeaders([
                 'Accept' => 'application/json',

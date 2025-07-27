@@ -22,7 +22,7 @@ class PawaPayWebhookController extends Controller
             return redirect(url("/product/payment/" . $ref));
         }
 
-        $status = null;
+
         $depositId = $request->get('depositId', null);
         if ($depositId) {
 
