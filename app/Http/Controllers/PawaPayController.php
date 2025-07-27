@@ -144,8 +144,34 @@ class PawaPayController extends Controller
         if (!empty($cancel) && isset($ref)) {
             return redirect(url("/product/payment/".$ref));
         }
-        $transaction = PawapayTransaction::where('deposit_id', $request->depositId)->firstOrFail();
-        return view('pawapay.payment.success', compact('transaction'));
+
+        $status = null;
+        $depositId = $request->get('depositId', null);
+        if ($depositId) {
+
+
+            $link = ProductPaymentLink::where(["reference_id" => $ref])->first();
+            $pawapayAccount = PawapayAccount::find($link->id);
+
+            $response = Http::withHeaders([
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer ' . $pawapayAccount->api_key,
+            ])->get(env("PAWAPAY_PAYMENT_PAGE_URL") . '/deposits/e977443b-1a90-493d-ba2f-451fc3d8ea48');
+
+
+            if ($response->successful()) {
+                $data = ($response->json()); // or ->body() for raw
+                $response = $data["data"] ?? null;
+                $status = $response["status"] ?? null;
+                PawapayTransaction::where(["deposit_id" => $depositId])->update([
+                        "status"=>$response["status"] ?? null,
+                        "webhook" => json_encode($request->all())]
+                );
+                Http::get('https://connect.pabbly.com/workflow/sendwebhookdata/IjU3NjYwNTZhMDYzNTA0MzA1MjZhNTUzMzUxMzAi_pc', json_encode($response));
+            }
+        }
+
+        return view('pawapay.payment.success', compact('depositId','status'));
     }
 
     function getCountriesList()

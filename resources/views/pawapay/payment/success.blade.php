@@ -8,14 +8,20 @@
         <p class="text-lg text-gray-700 mb-6">
             Your submission was successful. We appreciate your response!
         </p>
+        <p class="text-lg text-gray-700 mb-6">
+            Transaction Id: <strong>{{$depositId}}</strong>
+        </p>
+        <p class="text-lg text-gray-700 mb-6">
+            Transaction Status: <strong>{{$status}}</strong>
+        </p>
 
         {{-- Optional: Show some dynamic data --}}
         @if(session('reference_id'))
             <p class="text-gray-600 mb-2">Transaction ID: <strong>{{ session('reference_id') }}</strong></p>
         @endif
 
-{{--        <a href="{{ route('home') }}" class="inline-block mt-6 bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition">--}}
-{{--            Go to Homepage--}}
-{{--        </a>--}}
+        {{--        <a href="{{ route('home') }}" class="inline-block mt-6 bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition">--}}
+        {{--            Go to Homepage--}}
+        {{--        </a>--}}
     </div>
 @endsection

@@ -22,10 +22,10 @@ class PawaPayWebhookController extends Controller
             return redirect(url("/product/payment/" . $ref));
         }
 
-
+        $status = null;
         $depositId = $request->get('depositId', null);
         if ($depositId) {
-            PawapayTransaction::where(["deposit_id" => $depositId])->update(["webhook" => json_encode($request->all())]);
+
 
             $link = ProductPaymentLink::where(["reference_id" => $ref])->first();
             $pawapayAccount = PawapayAccount::find($link->id);
@@ -38,29 +38,16 @@ class PawaPayWebhookController extends Controller
 
             if ($response->successful()) {
                 $data = ($response->json()); // or ->body() for raw
-                Http::post('https://connect.pabbly.com/workflow/sendwebhookdata/IjU3NjYwNTZhMDYzNTA0MzA1MjZhNTUzMzUxMzAi_pc', json_encode($data["data"]));
-
-            } else {
-                dd($response->status(), $response->body());
+                $response = $data["data"] ?? null;
+                $status = $response["status"] ?? null;
+                PawapayTransaction::where(["deposit_id" => $depositId])->update([
+                    "status"=>$response["status"] ?? null,
+                    "webhook" => json_encode($request->all())]
+                );
+                Http::post('https://connect.pabbly.com/workflow/sendwebhookdata/IjU3NjYwNTZhMDYzNTA0MzA1MjZhNTUzMzUxMzAi_pc', json_encode($response));
             }
         }
 
-
-//
-//        $payload = $request->all();
-//
-//        $transaction = PawapayTransaction::where('reference_id', $payload['reference'])->first();
-//        if ($transaction) {
-//            $transaction->status = strtolower($payload['status']); // e.g., 'paid', 'failed'
-//            $transaction->webhook = json_encode($payload);
-//            $transaction->save();
-//        } else {
-//            $transaction = PawapayTransaction::first();
-//            if ($transaction) {
-//                $transaction->webhook = json_encode($payload);
-//                $transaction->save();
-//            }
-//        }
 
         return response()->json(['message' => 'Webhook received']);
     }
