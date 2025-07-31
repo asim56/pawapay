@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class PawapayAccount extends Model
 {
     protected $fillable = [
-        "name", "api_key"
+        "name", "api_key", "is_live_account"
     ];
 
     protected static function booted()

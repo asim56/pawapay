@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('api_key');
-            $table->string('is_default')->default(0);
+            $table->boolean('is_live_account')->default(true);
+            $table->boolean('is_default')->default(false);
             $table->timestamps();
         });
     }

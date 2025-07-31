@@ -30,10 +30,16 @@ class PawaPayWebhookController extends Controller
             $link = ProductPaymentLink::where(["reference_id" => $ref])->first();
             $pawapayAccount = PawapayAccount::find($link->id);
 
+
+            $gatewayURL = env("PAWAPAY_PAYMENT_PAGE_URL");
+            if (!$pawapayAccount->is_live_account) {
+                $gatewayURL = env("PAWAPAY_PAYMENT_SANDBOX_PAGE_URL");
+            }
+
             $response = Http::withHeaders([
                 'Accept' => 'application/json',
                 'Authorization' => 'Bearer ' . $pawapayAccount->api_key,
-            ])->get(env("PAWAPAY_PAYMENT_PAGE_URL") . '/deposits/e977443b-1a90-493d-ba2f-451fc3d8ea48');
+            ])->get($gatewayURL . '/deposits/e977443b-1a90-493d-ba2f-451fc3d8ea48');
 
 
             if ($response->successful()) {
@@ -41,8 +47,8 @@ class PawaPayWebhookController extends Controller
                 $response = $data["data"] ?? null;
                 $status = $response["status"] ?? null;
                 PawapayTransaction::where(["deposit_id" => $depositId])->update([
-                    "status"=>$response["status"] ?? null,
-                    "webhook" => json_encode($request->all())]
+                        "status" => $response["status"] ?? null,
+                        "webhook" => json_encode($request->all())]
                 );
                 Http::post('https://connect.pabbly.com/workflow/sendwebhookdata/IjU3NjYwNTZhMDYzNTA0MzA1MjZhNTUzMzUxMzAi_pc', json_encode($response));
             }

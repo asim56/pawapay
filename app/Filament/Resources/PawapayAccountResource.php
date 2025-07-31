@@ -26,6 +26,7 @@ class PawapayAccountResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')->required(),
                 Forms\Components\TextInput::make('api_key')->required(),
+                Forms\Components\Toggle::make('is_live_account')->default(true),
                 Forms\Components\Toggle::make('is_default'),
             ]);
     }
@@ -36,6 +37,7 @@ class PawapayAccountResource extends Resource
             ->columns([
                 TextColumn::make('name')->searchable(),
                 TextColumn::make('api_key')->limit(20),
+                Tables\Columns\ToggleColumn::make('is_live_account'),
                 IconColumn::make('is_default')
                     ->label('Default')
                     ->boolean()

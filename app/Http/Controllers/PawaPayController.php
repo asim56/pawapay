@@ -84,12 +84,17 @@ class PawaPayController extends Controller
             return back()->with('error', "Payapay account credentials are not set");
         }
 
+        $gatewayURL = env("PAWAPAY_PAYMENT_PAGE_URL");
+        if (!$pawapayAccount->is_live_account) {
+            $gatewayURL = env("PAWAPAY_PAYMENT_SANDBOX_PAGE_URL");
+        }
+
         $response = Http::withToken($pawapayAccount->api_key)
             ->withHeaders([
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
             ])
-            ->post(env("PAWAPAY_PAYMENT_PAGE_URL")."/paymentpage", $payload);
+            ->post($gatewayURL."/paymentpage", $payload);
 
 
         if ($response->failed()) {
@@ -153,10 +158,15 @@ class PawaPayController extends Controller
             $link = ProductPaymentLink::where(["reference_id" => $ref])->first();
             $pawapayAccount = PawapayAccount::find($link->pawapay_account_id);
 
+            $gatewayURL = env("PAWAPAY_PAYMENT_PAGE_URL");
+            if (!$pawapayAccount->is_live_account) {
+                $gatewayURL = env("PAWAPAY_PAYMENT_SANDBOX_PAGE_URL");
+            }
+
             $response = Http::withHeaders([
                 'Accept' => 'application/json',
                 'Authorization' => 'Bearer ' . $pawapayAccount->api_key,
-            ])->get(env("PAWAPAY_PAYMENT_PAGE_URL") . '/deposits/e977443b-1a90-493d-ba2f-451fc3d8ea48');
+            ])->get($gatewayURL . '/deposits/e977443b-1a90-493d-ba2f-451fc3d8ea48');
 
 
             if ($response->successful()) {

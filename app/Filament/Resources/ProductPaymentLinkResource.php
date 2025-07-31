@@ -54,11 +54,11 @@ class ProductPaymentLinkResource extends Resource
                     ->numeric()
                     ->step(0.0001)
                     ->required(),
-
-                TextInput::make('redirect_url')
-                    ->label('Redirect URL')
-                    ->url()
-                    ->required(),
+//
+//                TextInput::make('redirect_url')
+//                    ->label('Redirect URL')
+//                    ->url()
+//                    ->required(),
                 // your other fields...
 
                 Forms\Components\FileUpload::make('image')
