@@ -52,12 +52,12 @@ class PawaPayController extends Controller
         $referenceId = $product->reference_id;
 
         $country = $request->get('country');
-        if($country == "USD"){
+        if ($country == "USD") {
             $country = "COD";
         }
 
         $phone = $this->formatPhoneNumber($request->get('phone'), $request->get('country_code'));
-        $depositId = (string) Str::uuid();
+        $depositId = (string)Str::uuid();
         $payload = [
             "depositId" => $depositId,
             "amountDetails" => [
@@ -66,7 +66,7 @@ class PawaPayController extends Controller
             ],
             "phoneNumber" => $phone,
             "language" => "EN",
-            "country" =>$country,
+            "country" => $country,
             "metadata" => [
                 [
                     "customerId" => $request->get('email'),
@@ -94,7 +94,7 @@ class PawaPayController extends Controller
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
             ])
-            ->post($gatewayURL."/paymentpage", $payload);
+            ->post($gatewayURL . "/paymentpage", $payload);
 
 
         if ($response->failed()) {
@@ -147,7 +147,7 @@ class PawaPayController extends Controller
         $cancel = $request->get('cancel', null);
         $ref = $request->get('ref', null);
         if (!empty($cancel) && isset($ref)) {
-            return redirect(url("/product/payment/".$ref));
+            return redirect(url("/product/payment/" . $ref));
         }
 
         $status = null;
@@ -173,20 +173,27 @@ class PawaPayController extends Controller
                 $data = ($response->json()); // or ->body() for raw
                 $response = $data["data"] ?? null;
                 $status = $response["status"] ?? null;
+                $rawResponse["pawapay"] = $request->all();
+
+                try {
+                    $rawResponse["pabbly"] = Http::get('https://connect.pabbly.com/workflow/sendwebhookdata/IjU3NjYwNTZhMDYzNTA0MzA1MjZhNTUzMzUxMzAi_pc', json_encode($response));
+                } catch (\Exception $exception) {
+                    $rawResponse["exception"] = $exception->getMessage();
+                }
                 PawapayTransaction::where(["deposit_id" => $depositId])->update([
-                        "status"=>$response["status"] ?? null,
-                        "webhook" => json_encode($request->all())]
+                        "status" => $response["status"] ?? null,
+                        "webhook" => json_encode($rawResponse)
+                    ]
                 );
-                Http::get('https://connect.pabbly.com/workflow/sendwebhookdata/IjU3NjYwNTZhMDYzNTA0MzA1MjZhNTUzMzUxMzAi_pc', json_encode($response));
             }
         }
 
-        return view('pawapay.payment.success', compact('depositId','status'));
+        return view('pawapay.payment.success', compact('depositId', 'status'));
     }
 
     function getCountriesList()
     {
-        return  [
+        return [
             [
                 'name' => 'Benin',
                 'alpha2' => 'BJ',
