@@ -177,7 +177,7 @@ class PawaPayController extends Controller
 
                 try {
                     $rawResponse["pabbly"] = Http::get('https://connect.pabbly.com/workflow/sendwebhookdata/IjU3NjYwNTZhMDYzNTA0MzA1MjZhNTUzMzUxMzAi_pc', json_encode($response));
-                    dd($rawResponse["pabbly"] );
+
                 } catch (\Exception $exception) {
                     $rawResponse["exception"] = $exception->getMessage();
                 }
