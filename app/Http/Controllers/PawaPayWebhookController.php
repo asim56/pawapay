@@ -14,7 +14,7 @@ class PawaPayWebhookController extends Controller
     public function index(Request $request)
     {
         Webhook::create([
-            "payload" => $request->all(),
+            "payload" => json_encode($request->all()),
         ]);
         $cancel = $request->get('cancel', null);
         $ref = $request->get('ref', null);
