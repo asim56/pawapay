@@ -13,7 +13,7 @@ class PawaPayWebhookController extends Controller
 {
     public function index(Request $request)
     {
-        Webhook::created([
+        Webhook::create([
             "payload" => $request->all(),
         ]);
         $cancel = $request->get('cancel', null);
