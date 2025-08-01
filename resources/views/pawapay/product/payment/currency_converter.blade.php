@@ -186,12 +186,20 @@
 
             $.ajax({
                 // url: `https://api.exchangerate.host/convert?access_key=d3d453b2a81d2668a138eeac09b7576f&from=USD&to=${targetCurrency}&amount=${USD_DOLLAR}`,
-                url: `https://api.exchangerate.host/convert?access_key=e5132a29e4b19e23edfb255ad2e7fc5e&from=USD&to=${targetCurrency}&amount=${USD_DOLLAR}`,
+                //url: `https://api.exchangerate.host/convert?access_key=e5132a29e4b19e23edfb255ad2e7fc5e&from=USD&to=${targetCurrency}&amount=${USD_DOLLAR}`,
+                url: 'https://v6.exchangerate-api.com/v6/8f0905be9d7659d416f06194/latest/USD',
                 method: 'GET',
                 success: function (response) {
-                    if (response.result) {
+                    if (response.result && response.result === "success" && response.conversion_rates) {
+
                         // const finalValue = Math.ceil(parseFloat(response.result.toFixed(2)));
-                        currency_rate = response.result.toFixed(6);
+                        currency_rates = response.conversion_rates;
+                        console.log(currency_rates);
+                        currency_rate = currency_rates[targetCurrency];
+                        console.log(currency_rate);
+
+                        //currency_rate = response.result.toFixed(6);
+
 
                         total_price = Math.ceil(($('#price').val() * currency_rate));
                         $('#final_amount').val(total_price);
