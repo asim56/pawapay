@@ -45,7 +45,7 @@ class CreateProductPaymentLink extends CreateRecord
         }
 
         $data['reference_id'] = (string) Str::uuid();
-        $data['redirect_url'] = env("PAWAPAY_REDIRECT_URL");
+      //  $data['redirect_url'] = env("PAWAPAY_REDIRECT_URL");
         $pawapayAccount = PawapayAccount::where("is_default", 1)->first();
         $data['price'] = round(($data["product_price"] + $data["product_fee"]), 2);
         $data['pawapay_account_id'] = $pawapayAccount->id;
